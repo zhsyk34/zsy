@@ -1,24 +1,20 @@
-package com.cat.yd.entity;
+package com.cat.zsy.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.ws.rs.FormParam;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Builder
+import javax.xml.bind.annotation.XmlRootElement;
+import java.math.BigDecimal;
 
 @Data
 @Accessors(chain = true)
 
-//@XmlRootElement
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class User {
-    @FormParam("id")
+public class Product {
     private long id;
-    @FormParam("name")
     private String name;
+    private BigDecimal price;
 }

@@ -1,6 +1,7 @@
-package com.cat.yd.route;
+package com.cat.zsy.controller;
 
-import com.cat.yd.entity.User;
+import com.cat.zsy.entity.User;
+import com.cat.zsy.exception.Exceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +36,8 @@ public class UserResource {
     @Path("{id}")
     public User find(@PathParam("id") long id) {
         logger.debug("find----------------");
-        return new User().setId(id).setName("name" + id);
+        throw new Exceptions.MyException();
+//        return new User().setId(id).setName("name" + id);
     }
 
     @POST
