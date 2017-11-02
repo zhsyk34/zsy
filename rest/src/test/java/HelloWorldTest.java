@@ -1,5 +1,5 @@
 //import com.cat.zsy.App;
-//import com.cat.zsy.route.UserResource;
+//import com.cat.zsy.route.UserController;
 //import org.glassfish.jersey.client.ClientConfig;
 //import org.glassfish.jersey.netty.connector.NettyConnectorProvider;
 //import org.glassfish.jersey.server.ResourceConfig;
@@ -37,7 +37,7 @@
 //    protected ResourceConfig configure() {
 //        enable(TestProperties.LOG_TRAFFIC);
 //        // enable(TestProperties.DUMP_ENTITY);
-//        return new ResourceConfig(UserResource.class);
+//        return new ResourceConfig(UserController.class);
 //    }
 //
 //    @Override

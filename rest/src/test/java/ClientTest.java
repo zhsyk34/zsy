@@ -1,9 +1,8 @@
-import com.cat.zsy.entity.User;
+import com.cat.zsy.rest.entity.*;
 
-import javax.ws.rs.HttpMethod;
+import javax.ws.rs.*;
 import javax.ws.rs.client.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 
 public class ClientTest {
 
