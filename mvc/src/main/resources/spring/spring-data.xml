@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/data/jpa
+       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+    <context:property-placeholder location="classpath:/datasource.properties,classpath:/hibernate.properties"/>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="driverClassName" value="${mysql.driver}"/>
+        <property name="jdbcUrl" value="${mysql.url}"/>
+        <property name="username" value="${mysql.username}"/>
+        <property name="password" value="${mysql.password}"/>
+        <property name="readOnly" value="false"/>
+        <property name="connectionTimeout" value="30000"/>
+        <property name="idleTimeout" value="600000"/>
+        <property name="maxLifetime" value="1800000"/>
+        <property name="maximumPoolSize" value="15"/>
+    </bean>
+
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="database" value="MYSQL"/>
+        <property name="databasePlatform" value="org.hibernate.dialect.MySQL57InnoDBDialect"/>
+        <property name="showSql" value="true"/>
+        <property name="generateDdl" value="true"/>
+    </bean>
+
+    <bean id="persistenceProvider" class="org.hibernate.jpa.HibernatePersistenceProvider"/>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="persistenceProvider" ref="persistenceProvider"/>
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+
+        <!-- 指定持久化单元名字，即JPA配置文件中指定的 -->
+        <!--<property name="persistenceUnitName" value="com.ima"/>&lt;!&ndash;TODO&ndash;&gt;-->
+
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+        </property>
+
+        <property name="packagesToScan" value="com.cat.zsy.mvc.domain"/>
+
+        <property name="loadTimeWeaver">
+            <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+        </property>
+
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
+                <prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
+                <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+                <prop key="javax.persistence.validation.mode">${javax.persistence.validation.mode}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- 映射jpa接口-->
+    <jpa:repositories base-package="com.cat.zsy.mvc.repository"/>
+
+    <!-- 开启事务管理注解 -->
+    <tx:annotation-driven/>
+</beans>

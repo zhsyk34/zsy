@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com.cat.zsy.mvc.controller"/>
+
+    <!--注册默认的处理器等:AnnotationDrivenBeanDefinitionParser-->
+    <mvc:annotation-driven/>
+
+    <!--DefaultServletHttpRequestHandler:处理静态资源:转由容器如tomcat默认的Servlet处理-->
+    <mvc:default-servlet-handler default-servlet-name="default"/>
+
+    <!--由Spring MVC框架自己处理静态资源并添加一些有用的附加值功能:ResourcesBeanDefinitionParser-->
+    <!--两个*表示映射路径下所有的URL-->
+    <mvc:resources mapping="/**" location="/statics/" cache-period="6000"/>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper" ref="objectMapper"/>
+            </bean>
+        </mvc:message-converters>
+
+        <mvc:argument-resolvers>
+            <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver"/>
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
+
+    <bean id="objectMapper" class="com.cat.zsy.mvc.config.CustomObjectMapperFactory" factory-method="objectMapper"/>
+
+    <!-- 用于返回json格式 TODO-->
+    <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/x-www-form-urlencoded;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+</beans>
