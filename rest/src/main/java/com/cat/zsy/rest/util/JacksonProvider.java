@@ -2,7 +2,8 @@ package com.cat.zsy.rest.util;
 
 import com.fasterxml.jackson.databind.*;
 
-import javax.ws.rs.ext.*;
+import javax.ws.rs.ext.ContextResolver;
+import javax.ws.rs.ext.Provider;
 
 @Provider
 public class JacksonProvider implements ContextResolver<ObjectMapper> {
@@ -15,8 +16,9 @@ public class JacksonProvider implements ContextResolver<ObjectMapper> {
     }
 
     private static ObjectMapper createDefaultMapper() {
-        ObjectMapper result = new ObjectMapper();
-        result.enable(SerializationFeature.INDENT_OUTPUT);
-        return result;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
+        return mapper;
     }
 }

@@ -8,9 +8,15 @@
     <artifactId>zsy</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
+
     <modules>
         <module>rest</module>
         <module>netty</module>
+        <module>nio</module>
+        <module>servlet</module>
+        <module>mvc</module>
+        <module>boot</module>
+        <module>sql</module>
     </modules>
 
     <properties>
@@ -31,17 +37,20 @@
 
         <lombok.version>1.16.18</lombok.version>
 
-        <servlet.version>3.1.0</servlet.version>
+        <servlet.version>4.0.0</servlet.version>
         <jstl.version>1.2</jstl.version>
 
         <jackson.version>2.9.2</jackson.version>
 
-        <spring.version>4.3.11.RELEASE</spring.version>
+        <spring.version>5.0.1.RELEASE</spring.version>
 
-        <!--<httpclient.version>4.5.3</httpclient.version>-->
+        <mysql.version>8.0.8-dmr</mysql.version>
+        <hikaricp.version>2.7.3</hikaricp.version>
+        <hibernate.version>5.2.12.Final</hibernate.version>
 
-        <!--<jedis.version>2.9.0</jedis.version>-->
-        <!--<spring.redis.version>1.8.7.RELEASE</spring.redis.version>-->
+        <spring.jpa.version>2.0.1.RELEASE</spring.jpa.version>
+
+        <tomcat.version>9.0.1</tomcat.version>
     </properties>
 
     <dependencyManagement>
@@ -93,20 +102,76 @@
 
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
+                <artifactId>jackson-core</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
-
-            <!--spring-->
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-annotations</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${hikaricp.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+
+            <!--tomcat 源码:学习用-->
+            <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>tomcat-catalina</artifactId>
+                <version>${tomcat.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>tomcat-jasper</artifactId>
+                <version>${tomcat.version}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -123,13 +188,12 @@
         </dependency>
 
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
         </dependency>
     </dependencies>
 
@@ -147,6 +211,12 @@
                         <target>${maven.compiler.target}</target>
                         <encoding>${project.build.sourceEncoding}</encoding>
                     </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven.war.version}</version>
                 </plugin>
 
                 <plugin>

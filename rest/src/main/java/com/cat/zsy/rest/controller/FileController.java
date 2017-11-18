@@ -1,15 +1,19 @@
 package com.cat.zsy.rest.controller;
 
-import com.cat.zsy.rest.dto.*;
-import org.glassfish.grizzly.http.util.*;
-import org.glassfish.jersey.media.multipart.*;
-import org.slf4j.*;
+import com.cat.zsy.rest.dto.Result;
+import org.glassfish.grizzly.http.util.Header;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.*;
-import java.io.*;
-import java.nio.channels.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.file.*;
 
 @Path("/file")
@@ -54,7 +58,8 @@ public class FileController {
         };
         return Response
                 .ok(stream, MediaType.APPLICATION_OCTET_STREAM)
-                .header(Header.ContentDisposition.getLowerCase(), "attachment; file=" + filename)
+//                .type(MediaType.APPLICATION_OCTET_STREAM)
+                .header(Header.ContentDisposition.getLowerCase(), "attachment; filename=" + filename)
                 .build();
     }
 

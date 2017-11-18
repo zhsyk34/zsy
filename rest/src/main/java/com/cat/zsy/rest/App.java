@@ -1,25 +1,29 @@
 package com.cat.zsy.rest;
 
-import com.cat.zsy.rest.controller.*;
-import com.cat.zsy.rest.util.*;
-import io.netty.channel.*;
-import org.glassfish.grizzly.http.server.*;
-import org.glassfish.jersey.grizzly2.httpserver.*;
-import org.glassfish.jersey.jackson.*;
-import org.glassfish.jersey.media.multipart.*;
-import org.glassfish.jersey.netty.httpserver.*;
-import org.glassfish.jersey.server.*;
+import com.cat.zsy.rest.util.JacksonProvider;
+import io.netty.channel.Channel;
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.glassfish.jersey.netty.httpserver.NettyHttpContainerProvider;
+import org.glassfish.jersey.server.ResourceConfig;
 
-import java.net.*;
+import java.net.URI;
 
 //https://jersey.github.io/documentation/latest/user-guide.html
 public class App {
 
-    public static final URI BASE_URI = URI.create("http://localhost:8080/");
+    private static final URI BASE_URI = URI.create("http://localhost:8080/");
+
+    public static void main(String[] args) {
+        byNetty();
+//        byGrizzly();
+    }
 
     private static void byNetty() {
         try {
-            Channel server = NettyHttpContainerProvider.createHttp2Server(BASE_URI, createApp(), null);
+            Channel server = NettyHttpContainerProvider.createHttp2Server(BASE_URI, config(), null);
             Runtime.getRuntime().addShutdownHook(new Thread(server::close));
             Thread.currentThread().join();
         } catch (InterruptedException e) {
@@ -27,14 +31,9 @@ public class App {
         }
     }
 
-    public static void main(String[] args) {
-        byNetty();
-//        byGrizzly();
-    }
-
     private static void byGrizzly() {
         try {
-            HttpServer server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, createApp(), false);
+            HttpServer server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, config(), false);
             Runtime.getRuntime().addShutdownHook(new Thread(server::shutdown));
             server.start();
             Thread.currentThread().join();
@@ -43,27 +42,12 @@ public class App {
         }
     }
 
-//    private static ResourceConfig2 createApp() {
-//        String name = UserController.class.getPackage().getName();
-//        return new ResourceConfig()
-//                .packages(name)
-//                .register(createMoxyJsonResolver());
-//    }
-
-    private static ResourceConfig createApp() {
+    private static ResourceConfig config() {
         return new ResourceConfig()
                 .packages(App.class.getPackage().getName())
-                .register(UserController.class)
                 .register(JacksonProvider.class)
                 .register(JacksonFeature.class)
                 .register(MultiPartFeature.class);
     }
 
-//    private static ContextResolver<MoxyJsonConfig> createMoxyJsonResolver() {
-//        final MoxyJsonConfig moxyJsonConfig = new MoxyJsonConfig();
-//        Map<String, String> namespacePrefixMapper = new HashMap<>(1);
-//        namespacePrefixMapper.put("http://www.w3.org/2001/XMLSchema-instance", "xsi");
-//        moxyJsonConfig.setNamespacePrefixMapper(namespacePrefixMapper).setNamespaceSeparator(':');
-//        return moxyJsonConfig.resolver();
-//    }
 }
