@@ -11,7 +11,7 @@ import java.io.IOException;
 @Component
 public class PageSerializer extends StdSerializer<Page> {
 
-    protected PageSerializer() {
+    PageSerializer() {
         super(Page.class);
     }
 

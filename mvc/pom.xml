@@ -12,18 +12,30 @@
     <artifactId>mvc</artifactId>
     <packaging>war</packaging>
 
-    <!--<repositories>-->
-    <!--<repository>-->
-    <!--<id>ailis-releases</id>-->
-    <!--<name>Ailis Maven Releases</name>-->
-    <!--<url>http://nexus.ailis.de/content/groups/public/</url>-->
-    <!--</repository>-->
-    <!--</repositories>-->
+    <properties>
+        <jsp.version>2.2.1-b03</jsp.version>
+        <taglib.version>1.1.2</taglib.version>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>${jsp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>${taglib.version}</version>
         </dependency>
 
         <dependency>
@@ -42,7 +54,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
         </dependency>
 
         <dependency>
@@ -84,11 +95,11 @@
         </dependency>
 
         <!--php-->
-        <dependency>
-            <groupId>de.ailis.pherialize</groupId>
-            <artifactId>pherialize</artifactId>
-            <version>1.2.1</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>de.ailis.pherialize</groupId>-->
+        <!--<artifactId>pherialize</artifactId>-->
+        <!--<version>1.2.1</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
