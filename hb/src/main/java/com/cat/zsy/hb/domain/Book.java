@@ -1,7 +1,6 @@
 package com.cat.zsy.hb.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 
@@ -11,16 +10,14 @@ import javax.persistence.*;
                 name = "book.name",
                 column = @Column(name = "book_name")
         ),
-        @AttributeOverride(
-                name = "paper.name",
-                column = @Column(name = "paper_name")
-        )
+//        @AttributeOverride(
+//                name = "paper.name",
+//                column = @Column(name = "paper_name")
+//        )
 })
 
-@Getter
-@Setter
+@Data
 public class Book {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +26,7 @@ public class Book {
 
     private String author;
 
+    //    @Embedded
     private Publisher book;
 
     private Publisher paper;

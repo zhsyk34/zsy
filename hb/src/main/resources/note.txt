@@ -1,0 +1,2 @@
+https://docs.jboss.org/hibernate/orm/5.0/topical/html/metamodelgen/MetamodelGenerator.html
+StaticMetamodel自动生成类

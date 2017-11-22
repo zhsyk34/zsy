@@ -1,15 +1,15 @@
 package com.cat.zsy.hb.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-@Getter
-@Setter
+@Data
 public class Publisher {
 
+    @Column(name = "publisher_name")
     private String name;
 
 //    private Location location;

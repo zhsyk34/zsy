@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:property-placeholder location="classpath:/datasource.properties,classpath:/hibernate.properties"/>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="driverClassName" value="${mysql.driver}"/>
+        <property name="jdbcUrl" value="${mysql.url}"/>
+        <property name="username" value="${mysql.username}"/>
+        <property name="password" value="${mysql.password}"/>
+        <property name="readOnly" value="false"/>
+        <property name="connectionTimeout" value="30000"/>
+        <property name="idleTimeout" value="600000"/>
+        <property name="maxLifetime" value="1800000"/>
+        <property name="maximumPoolSize" value="20"/>
+    </bean>
+
+    <!--jndi获取-->
+    <!--<jee:jndi-lookup id="myEmf" jndi-name="persistence/myPersistenceUnit"/>-->
+
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+    <bean id="persistenceProvider" class="org.hibernate.jpa.HibernatePersistenceProvider"/>
+    <!--<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>-->
+    <!--<bean id="loadTimeWeaver" class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>-->
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="persistenceProvider" ref="persistenceProvider"/>
+
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+
+        <!--TODO:重复配置?-->
+        <!--最简单的配置仅需要指定此项,限制较多:http://blog.csdn.net/ethanwhite/article/details/72426822-->
+        <!--<property name="persistenceUnitName" value="hibernate"/>-->
+
+        <!--<property name="jpaDialect" ref="jpaDialect"/>-->
+
+        <property name="packagesToScan" value="com.cat.zsy.hb.domain"/>
+
+        <!--允许JPA 加载时修改相应的类文件,hibernate不需要-->
+        <!--<property name="loadTimeWeaver" ref="loadTimeWeaver"/>-->
+
+        <property name="jpaProperties">
+            <props>
+                <!--<prop key="hibernate.dialect">${hibernate.dialect}</prop>-->
+                <prop key="hibernate.dialect.storage_engine">${hibernate.dialect.storage_engine}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
+                <prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
+                <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+                <prop key="javax.persistence.validation.mode">${javax.persistence.validation.mode}</prop>
+
+                <!--naming-->
+                <!--<prop key="hibernate.physical_naming_strategy">com.cat.zsy.hb.config.CustomPhysicalNamingStrategy</prop>-->
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <tx:annotation-driven/>
+</beans>

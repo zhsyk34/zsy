@@ -5,12 +5,24 @@
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-    <persistence-unit name="hibernate">
+    <persistence-unit name="hibernate" transaction-type="RESOURCE_LOCAL">
+
         <description>study</description>
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+        <!--<jta-data-source></jta-data-source>-->
+
+        <!--TODO:不是这样用?-->
+        <!--<non-jta-data-source>com.zaxxer.hikari.HikariDataSource</non-jta-data-source>-->
+        <!--<mapping-file></mapping-file>-->
+        <!--<jar-file></jar-file>-->
+        <!--<class></class>-->
+
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+        <!--<shared-cache-mode></shared-cache-mode>-->
+        <!--<validation-mode></validation-mode>-->
 
         <!--<class>com.cat.zsy.hb.old.Person</class>-->
 
@@ -23,17 +35,21 @@
 
             <property name="javax.persistence.jdbc.password" value="root"/>
 
+            <!--TODO-->
             <!--<property name="hibernate.dialect.storage_engine" value="innodb"/>-->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL57InnoDBDialect "/>
+            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL57InnoDBDialect "/>-->
 
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
+            <!--<property name="hibernate.show_sql" value="true"/>-->
+            <!--<property name="hibernate.format_sql" value="true"/>-->
+            <!--<property name="hibernate.hbm2ddl.auto" value="update"/>-->
 
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <!--<property name="hibernate.ejb.naming_strategy" value="com.cat.zsy.hb.config.CustomPhysicalNamingStrategy"/>-->
 
-            <!--<property name="hibernate.archive.autodetection" value="com.cat.zsy.hb.domain"/>-->
+            <!--<property name="hibernate.archive.autodetection" value="class, hbm"/>-->
 
             <!--<property name="hibernate.hbm2ddl.import_files" value="schema-generation.sql"/>-->
+
+            <!--<property name="hibernate.connection.provider_class" value="com.zaxxer.hikari.hibernate.HikariConnectionProvider"/>-->
         </properties>
 
     </persistence-unit>

@@ -1,37 +1,36 @@
-//package com.cat.zsy.hb.config;
-//
-//import org.hibernate.boot.model.naming.Identifier;
-//import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
-//import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
-//
-//import java.util.*;
-//
-//public class AcmeCorpPhysicalNamingStrategy implements PhysicalNamingStrategy {
+package com.cat.zsy.hb.config;
+
+import org.hibernate.boot.model.naming.Identifier;
+import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
+import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
+
+public class CustomPhysicalNamingStrategy implements PhysicalNamingStrategy {
 //    private static final Map<String, String> ABBREVIATIONS = buildAbbreviationMap();
-//
-//    @Override
-//    public Identifier toPhysicalCatalogName(Identifier name, JdbcEnvironment jdbcEnvironment) {
-//        // Acme naming standards do not apply to catalog names
-//        return name;
-//    }
-//
-//    @Override
-//    public Identifier toPhysicalSchemaName(Identifier name, JdbcEnvironment jdbcEnvironment) {
-//        // Acme naming standards do not apply to schema names
-//        return name;
-//    }
-//
-//    @Override
-//    public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment jdbcEnvironment) {
+
+    @Override
+    public Identifier toPhysicalCatalogName(Identifier name, JdbcEnvironment jdbcEnvironment) {
+        // Acme naming standards do not apply to catalog names
+        return name;
+    }
+
+    @Override
+    public Identifier toPhysicalSchemaName(Identifier name, JdbcEnvironment jdbcEnvironment) {
+        // Acme naming standards do not apply to schema names
+        return name;
+    }
+
+    @Override
+    public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment jdbcEnvironment) {
 //        final List<String> parts = splitAndReplace(name.getText());
 //        return jdbcEnvironment.getIdentifierHelper().toIdentifier(
 //                join(parts),
 //                name.isQuoted()
 //        );
-//    }
-//
-//    @Override
-//    public Identifier toPhysicalSequenceName(Identifier name, JdbcEnvironment jdbcEnvironment) {
+        return Identifier.toIdentifier("HB_" + name.getText().toUpperCase());
+    }
+
+    @Override
+    public Identifier toPhysicalSequenceName(Identifier name, JdbcEnvironment jdbcEnvironment) {
 //        final LinkedList<String> parts = splitAndReplace(name.getText());
 //        // Acme Corp says all sequences should end with _seq
 //        if (!"seq".equalsIgnoreCase(parts.getLast())) {
@@ -41,17 +40,19 @@
 //                join(parts),
 //                name.isQuoted()
 //        );
-//    }
-//
-//    @Override
-//    public Identifier toPhysicalColumnName(Identifier name, JdbcEnvironment jdbcEnvironment) {
+        return name;
+    }
+
+    @Override
+    public Identifier toPhysicalColumnName(Identifier name, JdbcEnvironment jdbcEnvironment) {
 //        final List<String> parts = splitAndReplace(name.getText());
 //        return jdbcEnvironment.getIdentifierHelper().toIdentifier(
 //                join(parts),
 //                name.isQuoted()
 //        );
-//    }
-//
+        return Identifier.toIdentifier(name.getText().toUpperCase());
+    }
+
 //    private static Map<String, String> buildAbbreviationMap() {
 //        TreeMap<String, String> abbreviationMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 //        abbreviationMap.put("account", "acct");
@@ -93,4 +94,4 @@
 //        }
 //        return joined.toString();
 //    }
-//}
+}

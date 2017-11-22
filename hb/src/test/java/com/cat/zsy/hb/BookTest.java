@@ -6,7 +6,7 @@ import org.junit.*;
 import javax.persistence.*;
 
 //https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html
-public class PersonTest {
+public class BookTest {
 
     private static EntityManagerFactory factory;
     private static EntityManager manager;

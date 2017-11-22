@@ -1,13 +1,11 @@
 package com.cat.zsy.hb.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
-@Getter
-@Setter
+@Data
 public class Location {
 
     private String country;
